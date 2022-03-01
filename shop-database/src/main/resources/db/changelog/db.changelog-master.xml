@@ -12,7 +12,7 @@
 
     <preConditions>
         <dbms type="mysql"/>
-        <runningAs username="root"/>
+        <runningAs username="user"/>
     </preConditions>
 
     <changeSet id="0" author="mike_vas">
@@ -29,6 +29,18 @@
 
     <changeSet id="200" author="mike_vas">
         <tagDatabase tag="v-1.1"/>
+    </changeSet>
+
+    <include file="v-2.0/root.changelog.xml" relativeToChangelogFile="true"/>
+
+    <changeSet id="300" author="mike_vas">
+        <tagDatabase tag="v-2.0"/>
+    </changeSet>
+
+    <include file="v-2.1/root.changelog.xml" relativeToChangelogFile="true"/>
+
+    <changeSet id="400" author="mike_vas">
+        <tagDatabase tag="v-2.1"/>
     </changeSet>
 
 
