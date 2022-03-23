@@ -41,7 +41,7 @@ public class ProductController {
     public String listPage(
             @RequestParam("categoryId") Optional<Long> categoryId,
             @RequestParam("brandId") Optional<Long> brandId,
-            @RequestParam("namePattern") Optional<String> namePattern,
+            @RequestParam("nameFilter") Optional<String> nameFilter,
             @RequestParam("page") Optional<Integer> page,
             @RequestParam("size") Optional<Integer> size,
             @RequestParam("sortField") Optional<String> sortField, Model model) {
@@ -50,11 +50,11 @@ public class ProductController {
         model.addAttribute("products", productService.findAll(
                 brandId,
                 categoryId,
-                namePattern,
+                nameFilter,
                 page.orElse(1) - 1,
                 size.orElse(5),
                 sortField.filter(fld -> !fld.isBlank()).orElse("id")));
-        return "products";
+        return "product";
     }
 
     @ModelAttribute

@@ -9,6 +9,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "products")
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,75 +17,74 @@ public class Product {
     @Column
     private String name;
 
-    @Column(length = 65560, columnDefinition = "LONGTEXT")
-    private String description;
-
     @Column
     private BigDecimal price;
 
-    @ManyToOne(optional = false)
-    private Category category;
+    @Column(length = 65535, columnDefinition = "LONGTEXT")
+    private String description;
 
     @ManyToOne(optional = false)
-    private Brand brand;
+    private Category category;
 
     @OneToMany(mappedBy = "product",
             orphanRemoval = true,
             cascade = CascadeType.ALL)
     private List<Picture> pictures = new ArrayList<>();
 
+    @ManyToOne(optional = false)
+    private Brand brand;
 
-        public Product() {
-        }
-
-        public Product(Long id, String name, BigDecimal price, String description, Category category, Brand brand) {
-            this.id = id;
-            this.name = name;
-            this.price = price;
-            this.description = description;
-            this.category = category;
-            this.brand = brand;
-        }
-
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getDescription() {
-        return description;
+    public Product() {
     }
 
-        public void setDescription(String description) {
+    public Product(Long id, String name, BigDecimal price, String description, Category category, Brand brand) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
         this.description = description;
+        this.category = category;
+        this.brand = brand;
     }
 
-        public BigDecimal getPrice() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public BigDecimal getPrice() {
         return price;
     }
 
-        public void setPrice(BigDecimal price) {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-        public Category getCategory() {
-        return category;
-         }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-         public void setCategory(Category category) {
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
         this.category = category;
-         }
+    }
 
     public List<Picture> getPictures() {
         return pictures;

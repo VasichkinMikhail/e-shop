@@ -1,29 +1,29 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 
-    <th scope="col" th:fragment="sort_header_user (header, column)">[[${header}]]
-        <a th:href="@{/user(page=${param.page}, size=${param.size}, usernameFilter=${param.usernameFilter},
+<th scope="col" th:fragment="sort_header_user (header, column)">[[${header}]]
+    <a th:href="@{/user(page=${param.page}, size=${param.size}, usernameFilter=${param.usernameFilter},
                                 sortField=${column})}">
-            <i class="fa fa-sort-down"></i>
-        </a>
-    </th>
+        <i class="fa fa-sort-down"></i>
+    </a>
+</th>
 
-    <th scope="col" th:fragment="sort_header_product (header, column)">[[${header}]]
-        <a th:href="@{/product(categoryId=${param.categoryId},brandId=${param.brandId}, namePattern=${param.namePattern}, page=${param.page}, size=${param.size}, sortField=${column})}">
-            <i class="fa fa-sort-down"></i>
-        </a>
-    </th>
+<th scope="col" th:fragment="sort_header_product (header, column)">[[${header}]]
+    <a th:href="@{/product(brandId=${param.brandId}, categoryId=${param.categoryId}, nameFilter=${param.nameFilter}, page=${param.page}, size=${param.size}, sort=${column})}">
+        <i class="fa fa-sort-down"></i>
+    </a>
+</th>
 
-    <th scope="col" th:fragment="sort_header_category (header, column)">[[${header}]]
-        <a th:href="@{/category(page=${param.page}, size=${param.size}, sortField=${column})}">
-            <i class="fa fa-sort-down"></i>
-        </a>
-    </th>
+<th scope="col" th:fragment="sort_header_category (header, column)">[[${header}]]
+    <a th:href="@{/category(page=${param.page}, size=${param.size}, sortField=${column})}">
+        <i class="fa fa-sort-down"></i>
+    </a>
+</th>
 
-    <th scope="col" th:fragment="sort_header_category (header, column)">[[${header}]]
-        <a th:href="@{/brand(page=${param.page}, size=${param.size}, sortField=${column})}">
-            <i class="fa fa-sort-down"></i>
-        </a>
-    </th>
+<th scope="col" th:fragment="sort_header_brand (header, column)">[[${header}]]
+    <a th:href="@{/brand(page=${param.page}, size=${param.size}, sortField=${column})}">
+        <i class="fa fa-sort-down"></i>
+    </a>
+</th>
 
 </html>

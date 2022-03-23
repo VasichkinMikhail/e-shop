@@ -1,6 +1,5 @@
-"
-xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="paginator(data, linkFragment)" class="col-12" th:if="${data.hasContent()}">
     <nav aria-label="...">
@@ -19,3 +18,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
                 <a class="page-link" href="#">Next</a>
             </li>
         </ul>
+    </nav>
+</div>
+
+</html>

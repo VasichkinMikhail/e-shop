@@ -36,15 +36,14 @@
             </li>
             <li class="nav-item"
                 sec:authorize="isAuthenticated()"
-                th:classappend="${activePage == 'Product'} ? active">
-                <a class="nav-link" th:href="@{/product}">Products</a>
+                th:classappend="${activePage == 'Brand'} ? active">
+                <a class="nav-link" th:href="@{/brand}">Brands</a>
             </li>
             <li class="nav-item"
                 sec:authorize="isAuthenticated()"
-                th:classappend="${activePage == 'Brand'} ? active">
-                <a class="nav-link" th:href="@{/brand}">Products</a>
+                th:classappend="${activePage == 'Product'} ? active">
+                <a class="nav-link" th:href="@{/product}">Products</a>
             </li>
-
         </ul>
 
         <form sec:authorize="isAuthenticated()"

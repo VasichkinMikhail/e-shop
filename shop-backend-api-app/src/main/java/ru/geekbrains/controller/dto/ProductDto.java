@@ -23,7 +23,11 @@ public class ProductDto {
 
     private BrandDto brand;
 
-    public ProductDto(Long id, String name, String description, BigDecimal price, CategoryDto category, List<Long> pictures, BrandDto brand) {
+    public ProductDto() {
+    }
+
+    public ProductDto(Long id, String name, String description, BigDecimal price,
+                      CategoryDto category, BrandDto brand, List<Long> pictures) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -31,9 +35,6 @@ public class ProductDto {
         this.category = category;
         this.pictures = pictures;
         this.brand = brand;
-    }
-
-    public ProductDto() {
     }
 
     public Long getId() {
@@ -52,20 +53,20 @@ public class ProductDto {
         this.name = name;
     }
 
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public CategoryDto getCategory() {
