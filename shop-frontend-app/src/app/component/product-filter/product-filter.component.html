@@ -6,10 +6,10 @@
   <li class="list-group-item">Category 5</li>
 </ul>
 
-<form>
+<form >
   <label for="nameFilter" class="form-label">Name</label>
   <div class="input-group mb-3">
-    <input type="text" class="form-control" id="nameFilter" placeholder="Name" aria-label="Name">
+    <input type="text" [(ngModel)]="nameFilter" name="nameFilter" class="form-control" id="nameFilter" placeholder="Name" aria-label="Name">
   </div>
 
   <label for="priceFilter" class="form-label">Price</label>
