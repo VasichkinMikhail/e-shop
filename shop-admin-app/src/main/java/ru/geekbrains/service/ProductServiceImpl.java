@@ -46,11 +46,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductDto> findAll(Optional<Long> categoryId,Optional<Long> brandId, Optional<String> nameFilter,
+    public Page<ProductDto> findAll(Optional<Long> categoryId,Optional<Long> brandId, Optional<String> namePattern,
                                     Integer page, Integer size, String sortField) {
         Specification<Product> spec = Specification.where(null);
-        if (nameFilter.isPresent() && !nameFilter.get().isBlank()) {
-            spec = spec.and(ProductSpecification.nameLike(nameFilter.get()));
+        if (namePattern.isPresent() && !namePattern.get().isBlank()) {
+            spec = spec.and(ProductSpecification.nameLike(namePattern.get()));
         }
 
         if (categoryId.isPresent() && categoryId.get() != -1) {

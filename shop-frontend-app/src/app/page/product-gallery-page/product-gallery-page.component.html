@@ -1,16 +1,14 @@
  <div class="row py-2">
     <div class="col-md-3 col-xs-12">
-      <app-product-filter></app-product-filter>
+      <app-product-filter (nameFilterApplied)="applyNameFilter($event)"></app-product-filter>
     </div>
 
     <div class="col-md-9 col-xs-12">
-      <div class="row row-cols-1 row-cols-md-3 g-4">
-        <app-product-gallery></app-product-gallery>
-      </div>
+      <app-product-pagination [page]="page" (goToPageEvent)="goToPage($event)" ></app-product-pagination>
 
-      <div class="col-md-9 col-xs-12 mt-3">
-        <app-product-pagination></app-product-pagination>
-      </div>
+      <app-product-gallery [products]="products"></app-product-gallery>
+
+      <app-product-pagination [page]="page" (goToPageEvent)="goToPage($event)"></app-product-pagination>
     </div>
 
-  </div>
+ </div>

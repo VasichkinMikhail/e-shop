@@ -28,49 +28,35 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductDto> findAll(Optional<Long> brandId, Optional<Long> categoryId, Optional<String> nameFilter,
-                                    Integer page, Integer size, String sort) {
-
+    public Page<ProductDto> findAll(Optional<Long> categoryId,Optional<Long> brandId, Optional<String> namePattern,
+                                    Integer page, Integer size, String sortField) {
         Specification<Product> spec = Specification.where(null);
-        if (nameFilter.isPresent() && !nameFilter.get().isBlank()) {
-            spec = spec.and(ProductSpecification.nameLike(nameFilter.get()));
-        }
-
         if (categoryId.isPresent() && categoryId.get() != -1) {
             spec = spec.and(ProductSpecification.byCategory(categoryId.get()));
         }
-
         if (brandId.isPresent() && brandId.get() != -1) {
-            spec = spec.and(ProductSpecification.byBrand(brandId.get()));
+            spec = spec.and(ProductSpecification.byCategory(brandId.get()));
         }
-
-        return productRepository.findAll(spec,
-                        PageRequest.of(page, size, Sort.by(sort)))
-                .map(ProductServiceImpl::convertToDto);
+        if (namePattern.isPresent()) {
+            spec = spec.and(ProductSpecification.nameLike(namePattern.get()));
+        }
+        return productRepository.findAll(spec, PageRequest.of(page, size, Sort.by(sortField)))
+                .map(this::toProductDto);
     }
 
     @Override
     public Optional<ProductDto> findById(Long id) {
         return productRepository.findById(id)
-                .map(ProductServiceImpl::convertToDto);
+                .map(this::toProductDto);
     }
 
-    private static ProductDto convertToDto(Product product) {
-        return new ProductDto(
-                product.getId(),
+    private ProductDto toProductDto(Product product) {
+        return new ProductDto(product.getId(),
                 product.getName(),
                 product.getDescription(),
                 product.getPrice(),
-                new CategoryDto(product.getCategory().getId(),
-                        product.getCategory().getName()),
-                new BrandDto(product.getBrand().getId(),
-                        product.getBrand().getName()),
-                product.getPictures()
-                        .stream()
-                        .map(Picture::getId)
-                        .collect(Collectors.toList())
-
-
-        );
+                new CategoryDto(product.getCategory().getId(), product.getCategory().getName()),
+                new BrandDto(product.getBrand().getId(),product.getBrand().getName()),
+                product.getPictures().stream().map(Picture::getId).collect(Collectors.toList()));
     }
 }
