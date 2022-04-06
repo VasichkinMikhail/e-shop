@@ -1,0 +1,11 @@
+<th scope="row">1</th>
+<td>{{lineItem?.productDto?.name}}</td>
+<td>
+  <input type="number" [(ngModel)]="qty" class="form-control w-25"/>
+</td>
+<td>{{lineItem?.itemTotal}}</td>
+<td>
+  <a class="btn btn-success me-2" (click)="updateLineItem()"><i class="fas fa-check-circle"></i></a>
+  <a class="btn btn-danger" (click)="deleteLineItem()"><i class="far fa-trash-alt"></i></a>
+</td>
+

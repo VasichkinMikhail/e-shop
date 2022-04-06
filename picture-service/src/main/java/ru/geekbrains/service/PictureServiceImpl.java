@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.controller.PictureDto;
 import ru.geekbrains.persist.PictureRepository;
-import ru.geekbrains.persist.model.Picture;
+
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -46,6 +46,7 @@ public class PictureServiceImpl implements PictureService {
                     }
                 });
     }
+
 
     @Override
     public String createPicture(byte[] pictureData) {
