@@ -1,12 +1,11 @@
-<!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments/navigation.html :: head">
+<head th:replace="fragments/header.html :: head">
 </head>
 
 <body>
 
-<nav th:replace="fragments/navigation.html :: navigation">
+<nav th:replace="fragments/header.html :: navigation">
 </nav>
 
 <div class="container">
@@ -53,7 +52,7 @@
     </div>
 </div>
 
-<th:block th:replace="fragments/scripts.html :: scripts">
+<th:block th:replace="fragments/footer.html :: scripts">
 </th:block>
 
 </body>

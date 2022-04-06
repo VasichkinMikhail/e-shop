@@ -2,7 +2,6 @@ package ru.geekbrains.service;
 
 import org.springframework.data.domain.Page;
 import ru.geekbrains.controller.dto.BrandDto;
-import ru.geekbrains.controller.dto.CategoryDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,11 +9,11 @@ import java.util.Optional;
 public interface BrandService {
     List<BrandDto> findAll();
 
-    Page<BrandDto> findAll(Integer page, Integer size, String sortField);
+    Page<BrandDto> findAll(Integer page, Integer size, String sort);
 
     Optional<BrandDto> findById(Long id);
 
-    void save(BrandDto brandDto);
+    void save(BrandDto brand);
 
     void deleteById(Long id);
 }

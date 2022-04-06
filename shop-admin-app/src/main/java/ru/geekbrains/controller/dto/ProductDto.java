@@ -17,24 +17,23 @@ public class ProductDto {
 
     private CategoryDto category;
 
-    private BrandDto brandDto;
-
     private MultipartFile[] newPicture;
 
     private List<Long> pictures;
 
-    public ProductDto() {
-    }
+    private BrandDto brand;
 
-    public ProductDto(Long id, String name, String description, BigDecimal price,
-                      CategoryDto category, BrandDto brandDto, List<Long> pictures) {
+    public ProductDto(Long id, String name, String description, BigDecimal price, CategoryDto category, List<Long> pictures, BrandDto brand) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.category = category;
         this.pictures = pictures;
-        this.brandDto = brandDto;
+        this.brand = brand;
+    }
+
+    public ProductDto() {
     }
 
     public Long getId() {
@@ -53,20 +52,20 @@ public class ProductDto {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public BigDecimal getPrice() {
         return price;
     }
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public CategoryDto getCategory() {
@@ -93,11 +92,11 @@ public class ProductDto {
         this.pictures = pictures;
     }
 
-    public BrandDto getBrandDto() {
-        return brandDto;
+    public BrandDto getBrand() {
+        return brand;
     }
 
-    public void setBrandDto(BrandDto brandDto) {
-        this.brandDto = brandDto;
+    public void setBrand(BrandDto brand) {
+        this.brand = brand;
     }
 }

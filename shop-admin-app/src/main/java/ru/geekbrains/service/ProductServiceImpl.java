@@ -12,9 +12,11 @@ import ru.geekbrains.controller.NotFoundException;
 import ru.geekbrains.controller.dto.BrandDto;
 import ru.geekbrains.controller.dto.CategoryDto;
 import ru.geekbrains.controller.dto.ProductDto;
+import ru.geekbrains.persist.BrandRepository;
 import ru.geekbrains.persist.CategoryRepository;
 import ru.geekbrains.persist.ProductRepository;
 import ru.geekbrains.persist.ProductSpecification;
+import ru.geekbrains.persist.model.Brand;
 import ru.geekbrains.persist.model.Category;
 import ru.geekbrains.persist.model.Picture;
 import ru.geekbrains.persist.model.Product;
@@ -32,45 +34,42 @@ public class ProductServiceImpl implements ProductService {
 
     private final PictureService pictureService;
 
+    private final BrandRepository brandRepository;
+
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository,
-                              CategoryRepository categoryRepository, PictureService pictureService) {
+                              CategoryRepository categoryRepository, PictureService pictureService, BrandRepository brandRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.pictureService = pictureService;
+        this.brandRepository = brandRepository;
     }
 
     @Override
-    public Page<ProductDto> findAll(Optional<Long> categoryId,Optional<Long> brandId, Optional<String> namePattern,
+    public Page<ProductDto> findAll(Optional<Long> categoryId,Optional<Long> brandId, Optional<String> nameFilter,
                                     Integer page, Integer size, String sortField) {
         Specification<Product> spec = Specification.where(null);
+        if (nameFilter.isPresent() && !nameFilter.get().isBlank()) {
+            spec = spec.and(ProductSpecification.nameLike(nameFilter.get()));
+        }
+
         if (categoryId.isPresent() && categoryId.get() != -1) {
             spec = spec.and(ProductSpecification.byCategory(categoryId.get()));
         }
-        if (namePattern.isPresent()) {
-            spec = spec.and(ProductSpecification.byName(namePattern.get()));
+
+        if (brandId.isPresent() && brandId.get() != -1) {
+            spec = spec.and(ProductSpecification.byBrand(brandId.get()));
         }
-        return productRepository.findAll(spec, PageRequest.of(page, size, Sort.by(sortField)))
-                .map(product -> new ProductDto(product.getId(),
-                        product.getName(),
-                        product.getDescription(),
-                        product.getPrice(),
-                        new CategoryDto(product.getCategory().getId(), product.getCategory().getName()),
-                                new BrandDto(product.getBrand().getId(), product.getBrand().getName()),
-                        product.getPictures().stream().map(Picture::getId).collect(Collectors.toList())
-                        ));
+
+        return productRepository.findAll(spec,
+                        PageRequest.of(page, size, Sort.by(sortField)))
+                .map(ProductServiceImpl::convertToDto);
     }
 
     @Override
     public Optional<ProductDto> findById(Long id) {
         return productRepository.findById(id)
-                .map(product -> new ProductDto(product.getId(),
-                        product.getName(),
-                        product.getDescription(),
-                        product.getPrice(),
-                        new CategoryDto(product.getCategory().getId(), product.getCategory().getName()),
-                        new BrandDto(product.getBrand().getId(), product.getBrand().getName()),
-                        product.getPictures().stream().map(Picture::getId).collect(Collectors.toList())));
+                .map(ProductServiceImpl::convertToDto);
     }
 
     @Override
@@ -80,9 +79,12 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new NotFoundException("")) : new Product();
         Category category = categoryRepository.findById(productDto.getCategory().getId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
+        Brand brand = brandRepository.findById(productDto.getBrand().getId())
+                .orElseThrow(() -> new RuntimeException("Brand not found"));
 
         product.setName(productDto.getName());
         product.setCategory(category);
+        product.setBrand(brand);
         product.setPrice(productDto.getPrice());
         product.setDescription(productDto.getDescription());
 
@@ -106,5 +108,22 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteById(Long id) {
         productRepository.deleteById(id);
+    }
+
+    private static ProductDto convertToDto(Product product) {
+        return new ProductDto(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getPrice(),
+                new CategoryDto(product.getCategory().getId(),
+                        product.getCategory().getName()),
+                product.getPictures()
+                        .stream()
+                        .map(Picture::getId)
+                        .collect(Collectors.toList()),
+                new BrandDto(product.getBrand().getId(),
+                        product.getBrand().getName())
+        );
     }
 }

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ru.geekbrains.controller.PictureDto;
 import ru.geekbrains.persist.PictureRepository;
 import ru.geekbrains.persist.model.Picture;
 
@@ -20,10 +21,10 @@ public class PictureServiceImpl implements PictureService {
 
     private static final Logger logger = LoggerFactory.getLogger(PictureServiceImpl.class);
 
+    private final PictureRepository pictureRepository;
+
     @Value("${picture.storage.path}")
     private String storagePath;
-
-    private final PictureRepository pictureRepository;
 
     @Autowired
     public PictureServiceImpl(PictureRepository pictureRepository) {
@@ -31,18 +32,14 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public Optional<String> getPictureContentType(long id) {
-        return pictureRepository.findById(id).map(Picture::getContentType);
-    }
-
-    @Override
-    public Optional<byte[]> getPictureDataById(long id) {
+    public Optional<PictureDto> getPictureDataById(long id) {
         return pictureRepository.findById(id)
-                .map(pic -> Paths.get(storagePath, pic.getStorageFileName()))
-                .filter(Files::exists)
-                .map(path -> {
+                .map(pic -> new PictureDto(pic.getContentType(), Paths.get(storagePath, pic.getStorageFileName())))
+                .filter(pic -> Files.exists(pic.getPath()))
+                .map(pic -> {
                     try {
-                        return Files.readAllBytes(path);
+                        pic.setData(Files.readAllBytes(pic.getPath()));
+                        return pic;
                     } catch (IOException ex) {
                         logger.error("Can't read file", ex);
                         throw new RuntimeException(ex);
@@ -52,13 +49,18 @@ public class PictureServiceImpl implements PictureService {
 
     @Override
     public String createPicture(byte[] pictureData) {
-        String filename = UUID.randomUUID().toString();
-        try (OutputStream os = Files.newOutputStream(Paths.get(storagePath, filename))) {
-            os.write(pictureData);
-        } catch (IOException ex) {
-            logger.error("Can't write to file", ex);
-            throw new RuntimeException(ex);
+        String fileName = UUID.randomUUID().toString();
+        try (OutputStream outputStream = Files.newOutputStream(Paths.get(storagePath, fileName))) {
+            outputStream.write(pictureData);
+        } catch (IOException e) {
+            logger.error("Can't write to file", e);
+            throw new RuntimeException(e);
         }
-        return filename;
+        return fileName;
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        pictureRepository.deleteById(id);
     }
 }
