@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CartService} from "../../service/cart.service";
 import {AllCartDto} from "../../model/all-cart-dto";
+import {OrderService} from "../../service/order.service";
 
 export const CART_URL = 'cart'
 
@@ -13,7 +14,7 @@ export class CartPageComponent implements OnInit {
 
   content?: AllCartDto;
 
-  constructor(private cartService: CartService) {
+  constructor(private cartService: CartService, private orderService: OrderService) {
   }
 
   ngOnInit(): void {
@@ -26,5 +27,8 @@ export class CartPageComponent implements OnInit {
         this.content = res;
       }
     )
+  }
+  createOrder(){
+    this.orderService.createOrder();
   }
 }
