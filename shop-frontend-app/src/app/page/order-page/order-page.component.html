@@ -18,8 +18,8 @@
         <td>{{order.price}}</td>
         <td>{{order.status}}</td>
         <td>
-          <a class="btn btn-success me-2" href="#"><i class="fas fa-edit"></i></a>
-          <a class="btn btn-danger" href="#"><i class="fas fa-stop"></i></a>
+          <a class="btn btn-success me-2" (click)="viewOrder()"><i class="fas fa-edit"></i></a>
+          <a class="btn btn-danger" (click)="deleteOrder()"><i class="fas fa-stop"></i></a>
         </td>
       </tr>
       </tbody>
