@@ -39,7 +39,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void removeProductQty(ProductDto productDto, String color, String material, int qty) {
-        // TODO
+
     }
 
     @Override
@@ -61,5 +61,10 @@ public class CartServiceImpl implements CartService {
         return lineItems.keySet()
                 .stream().map(LineItem::getItemTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public void clear() {
+        lineItems.clear();
     }
 }
