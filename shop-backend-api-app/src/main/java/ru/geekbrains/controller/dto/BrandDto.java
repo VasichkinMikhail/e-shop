@@ -1,6 +1,8 @@
 package ru.geekbrains.controller.dto;
 
-public class BrandDto {
+import java.io.Serializable;
+
+public class BrandDto implements Serializable {
     private Long id;
 
     private String name;
