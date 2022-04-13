@@ -16,4 +16,9 @@ export class OrderService {
   public createOrder() {
     return this.http.post<any>('/api/v1/order', {});
   }
+  public deleteOrder(order: Order[]) {
+    return this.http.delete('api/v1/order', ({
+      body: order
+    }));
+  }
 }

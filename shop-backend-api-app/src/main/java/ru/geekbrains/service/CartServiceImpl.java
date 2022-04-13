@@ -6,7 +6,6 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.controller.dto.ProductDto;
 import ru.geekbrains.service.dto.LineItem;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
