@@ -24,4 +24,4 @@ spring:
         - id: shop-picture-service-api
           uri: lb://SHOP-PICTURE-SERVICE-API
           predicates:
-            - Path=/picture/**
+            - Path=/api/**
