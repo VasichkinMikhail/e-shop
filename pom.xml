@@ -35,6 +35,7 @@
         <module>spring-eureka</module>
         <module>spring-cloud-gateway</module>
         <module>shop-picture-service-api</module>
+        <module>shop-delivery-service</module>
     </modules>
     <dependencyManagement>
         <dependencies>

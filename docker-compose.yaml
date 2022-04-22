@@ -9,6 +9,7 @@ services:
     image: shop-frontend-app:latest
     ports:
       - 8080:80
+    restart: always
     depends_on:
       - shop-admin-app
       - shop-backend-api-app
@@ -23,9 +24,10 @@ services:
     environment:
       - PROFILE=dock
       - CONFIG_SERVER_URL=http://cloud-config:8888
-    command: bash -c "/apps/wait-for-service.sh db 3306 && /apps/wait-for-service.sh cloud-config 8888 && /apps/entrypoint.sh"
+    command: bash -c "/apps/wait-for-service.sh mysql 3306 && /apps/wait-for-service.sh cloud-config 8888 && /apps/entrypoint.sh"
+    restart: always
     depends_on:
-      - db
+      - mysql
       - redis
       - cloud-config
 
@@ -36,11 +38,14 @@ services:
     environment:
       - PROFILE=dock
       - CONFIG_SERVER_URL=http://cloud-config:8888
-    command: bash -c "/apps/wait-for-service.sh db 3306 && /apps/wait-for-service.sh cloud-config 8888 && /apps/entrypoint.sh"
+    command: bash -c "/apps/wait-for-service.sh rabbitmq 5672 && /apps/wait-for-service.sh mysql 3306 && /apps/wait-for-service.sh cloud-config 8888 && /apps/entrypoint.sh"
+    restart: always
     depends_on:
-      - db
+      - mysql
       - redis
       - cloud-config
+      - shop-delivery-service
+      - rabbitmq
 
   picture-service-app:
     image: registry.heroku.com/geek-shop-picture-service-api/web:latest
@@ -51,26 +56,28 @@ services:
     environment:
       - PROFILE=dock
       - CONFIG_SERVER_URL=http://cloud-config:8888
-    command: bash -c "/apps/wait-for-service.sh db 3306 && /apps/wait-for-service.sh cloud-config 8888 && /apps/entrypoint.sh"
+    command: bash -c "/apps/wait-for-service.sh mysql 3306 && /apps/wait-for-service.sh cloud-config 8888 && /apps/entrypoint.sh"
+    restart: always
     depends_on:
-      - db
+      - mysql
       - cloud-config
 
-  db:
-    #    image: postgres
-    #    restart: always
-    #    environment:
-    #      POSTGRES_PASSWORD: password
-    #    ports:
-    #    - 5432:5432
+  shop-delivery-service:
+    image: registry.heroku.com/geek-shop-delivery-service/web:latest
+    command: bash -c "/apps/wait-for-service.sh rabbitmq 5672 && /apps/wait-for-service.sh cloud-config 8888 && /apps/entrypoint.sh"
+    restart: always
+    depends_on:
+      - cloud-config
+      - rabbitmq
 
+  mysql:
     image: mysql:8.0.28
     environment:
-      MYSQL_USER_PASSWORD: "mikhail1988"
+      MYSQL_ROOT_PASSWORD: "root"
     ports:
       - 3306:3306
     volumes:
-      - mysql-data:/var/lib/mysql
+      - mysql:/var/lib/mysql
 
   redis:
     image: 'bitnami/redis:latest'
@@ -79,5 +86,11 @@ services:
     ports:
       - 6379:6379
 
+  rabbitmq:
+    image: 'bitnami/rabbitmq:latest'
+    ports:
+      - 5672
+      - 15672:15672
+
 volumes:
-  mysql-data:
+  mysql:
