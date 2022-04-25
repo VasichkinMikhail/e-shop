@@ -47,23 +47,23 @@ public class CartServiceTest {
         assertEquals(expectedProduct.getName(), lineItem.getProductDto().getName());
     }
 
-    @Disabled
-    @Test
-    public void removeProductQtyTest() {
-        ProductDto expectedProduct = new ProductDto();
-        expectedProduct.setId(1L);
-        expectedProduct.setPrice(new BigDecimal(123));
-        expectedProduct.setName("Product name");
-
-        cartService.addProductQty(expectedProduct, "color", "material", 2);
-
-        List<LineItem> lineItems = cartService.getLineItems();
-        assertNotNull(lineItems);
-        assertEquals(1, lineItems.size());
-
-        cartService.removeProductQty(expectedProduct,"color", "material", 2);
-
-        assertTrue(cartService.getLineItems().isEmpty());
-        assertEquals(BigDecimal.ZERO, cartService.getSubTotal());
-    }
+//    @Disabled
+//    @Test
+//    public void removeProductQtyTest() {
+//        ProductDto expectedProduct = new ProductDto();
+//        expectedProduct.setId(1L);
+//        expectedProduct.setPrice(new BigDecimal(123));
+//        expectedProduct.setName("Product name");
+//
+//        cartService.addProductQty(expectedProduct, "color", "material", 2);
+//
+//        List<LineItem> lineItems = cartService.getLineItems();
+//        assertNotNull(lineItems);
+//        assertEquals(1, lineItems.size());
+//
+//        cartService.removeProductQty(expectedProduct,"color", "material", 2);
+//
+//        assertTrue(cartService.getLineItems().isEmpty());
+//        assertEquals(BigDecimal.ZERO, cartService.getSubTotal());
+//    }
 }
